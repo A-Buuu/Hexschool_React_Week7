@@ -9,7 +9,7 @@ import Toast from "../components/Toast";
 const API_BASE = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
-function ProductPage() {
+function ProductPage({setIsAuth}) {
   // Modal 相關
 
   const [modalMode, setModalMode] = useState(null);
@@ -49,7 +49,7 @@ function ProductPage() {
   const openDelProductModal = (product) => {
     // 打開刪除產品 Modal 時將點選的產品設為 tempProduct
     setTempProduct(product);
-    
+
     setIsDelProductModalOpen(true);
   };
 
@@ -80,10 +80,32 @@ function ProductPage() {
     getProductData(page);
   };
 
+  // 登出
+  const logout = async () => {
+    try {
+      await axios.post(`${API_BASE}/logout`);
+      setIsAuth(false);
+    } catch (error) {
+      //console.error(error.response.data.message);
+      alert("登出失敗");
+    }
+  };
+
   return (
     <>
       <div>
         <div className="container">
+          <div className="mb-3">
+            <div className="text-start">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={logout}
+              >
+                登出
+              </button>
+            </div>
+          </div>
           <div className="d-flex justify-content-between mt-4">
             <h2 className="fw-bolder">產品列表</h2>
             <button

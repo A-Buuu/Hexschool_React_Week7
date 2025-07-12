@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       {isAuth ? (
-        <ProductPage />
+        <ProductPage setIsAuth={setIsAuth}/>
       ) : (
         <LoginPage setIsAuth={setIsAuth} />
       )}
