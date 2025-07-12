@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-// import * as bootstrap from "bootstrap";
-// 只解構出需要用的到功能: Modal
-import { Modal } from "bootstrap";
 
 import Pagination from "../components/Pagination";
 import ProductModal from "../components/ProductModal";
 import DelProductModal from "../components/DelProductModal";
+import Toast from "../components/Toast";
 
 const API_BASE = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -173,6 +171,7 @@ function ProductPage() {
         setIsOpen={setIsDelProductModalOpen}
         getProductData={getProductData}
       />
+      <Toast />
     </>
   );
 }
