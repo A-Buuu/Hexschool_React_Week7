@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import { Modal } from "bootstrap";
+import { useDispatch } from "react-redux";
+import { pushMessage } from "../slices/toastSlice";
 
 const API_BASE = import.meta.env.VITE_BASE_URL;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -14,6 +16,7 @@ function ProductModal({
   getProductData,
 }) {
   const productModalRef = useRef(null);
+  const dispatch = useDispatch();
   /* 以下助教寫法有 bug: 
      當編輯後按取消，同個商品再次點編輯，剛剛修改的內容沒有被刪掉 */
   // 不希望 temProduct 在 Modal 中被改變
@@ -75,8 +78,18 @@ function ProductModal({
           is_enabled: tempProduct.is_enabled ? 1 : 0,
         },
       });
+      dispatch(pushMessage({
+        text: "新增產品成功",
+        status: 'success'
+      }));
     } catch (error) {
-      alert("新增產品失敗");
+      // alert("新增產品失敗");
+      dispatch(
+        pushMessage({
+          text: `${error.response.data.message}`,
+          status: 'fail'
+        })
+      );
     }
   };
 
@@ -95,8 +108,20 @@ function ProductModal({
           },
         }
       );
+      dispatch(
+        pushMessage({
+          text: "編輯產品成功",
+          status: "success",
+        })
+      );
     } catch (error) {
-      alert("編輯產品失敗");
+      // alert("編輯產品失敗");
+      dispatch(
+        pushMessage({
+          text: "編輯產品失敗",
+          status: "fail",
+        })
+      );
     }
   };
 

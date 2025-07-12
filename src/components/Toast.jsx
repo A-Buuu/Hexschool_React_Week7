@@ -21,9 +21,9 @@ export default function Toast() {
         const toastInstance = new BsToast(messageElement);
         toastInstance.show();
       }
-    })
-    // console.log(toastRef);    
-  }, []);
+    });
+    // console.log(toastRef);
+  }, [messages]);
 
   return (
     <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1000 }}>
@@ -50,7 +50,7 @@ export default function Toast() {
               aria-label="Close"
             ></button>
           </div>
-          <div className="toast-body">{message.text}</div>
+          <div className="toast-body text-start">{message.text}</div>
         </div>
       ))}
     </div>
