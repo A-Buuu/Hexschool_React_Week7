@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // 因 Toast API 與我們元件撞名，因此改名 BsToast
 import { Toast as BsToast } from "bootstrap";
+import { removeMessage } from "../slices/toastSlice";
+
 
 export default function Toast() {
   const messages = useSelector((state) => {
@@ -11,6 +13,7 @@ export default function Toast() {
 
   // 建立 Toast 實例
   const toastRef = useRef({});
+  const dispatch = useDispatch();
   useEffect(() => {
     // 讓每個訊息都建立一個 Toast 的實例
     messages.forEach((message) => {
@@ -20,10 +23,18 @@ export default function Toast() {
       if (messageElement) {
         const toastInstance = new BsToast(messageElement);
         toastInstance.show();
+
+        setTimeout(() => {
+          dispatch(removeMessage(message.id))
+        }, 2000);
       }
     });
     // console.log(toastRef);
   }, [messages]);
+
+  const handleDismiss = (message_id) => {
+    dispatch(removeMessage(message_id));
+  }
 
   return (
     <div className="position-fixed top-0 end-0 p-3" style={{ zIndex: 1000 }}>
@@ -48,6 +59,7 @@ export default function Toast() {
               type="button"
               className="btn-close"
               aria-label="Close"
+              onClick={() => handleDismiss(message.id)}
             ></button>
           </div>
           <div className="toast-body text-start">{message.text}</div>
